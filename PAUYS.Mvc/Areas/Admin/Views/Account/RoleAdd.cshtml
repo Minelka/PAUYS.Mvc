@@ -1,0 +1,39 @@
+﻿@model RoleCreateViewModel
+@{
+    ViewData["Title"] = "Rol Ekle";
+    ViewBag.Title = "Rol Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+else if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-controller="Account" asp-action="RoleAdd" method="post" class="form-horizontal">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="Name" class="control-label col-md-2">Rol Adı</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" />
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Gönder</button>
+        </div>
+    </div>
+</form>

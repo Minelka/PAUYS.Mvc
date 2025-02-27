@@ -1,0 +1,25 @@
+﻿@model RoleWithUsersViewModel
+
+@{
+    ViewData["Title"] = "Users List";
+    ViewBag.Title = "Kullanıcılar";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml";
+}
+
+@foreach (UserResponseViewModel item in Model.Users)
+{
+    <dl class="row">
+        <dt class="col-sm-3">Adı</dt>
+        <dd class="col-sm-9">@item.FirstName</dd>
+
+        <dt class="col-sm-3">Soyadı</dt>
+        <dd class="col-sm-9">@item.LastName</dd>
+
+        <dt class="col-sm-3">E-Posta Adresi</dt>
+        <dd class="col-sm-9">@item.Email</dd>
+
+        <dt class="col-sm-3">PictureFileName</dt>
+        <dd class="col-sm-9">@item.PictureFileName</dd>
+    </dl>
+    <hr />
+}

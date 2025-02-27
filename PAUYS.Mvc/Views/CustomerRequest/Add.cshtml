@@ -1,0 +1,142 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model CustomerRequestViewModel
+
+@{
+    ViewData["Title"] = "Müşteri Talebi Ekle";
+    ViewBag.Title = "Talep Oluştur";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+
+    <!-- jQuery'yi yükle -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <h2>@ViewData["Title"]</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    else if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <form asp-action="Add" method="post" class="form-horizontal">
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label for="FirstName" class="control-label col-md-2">Müşteri Adı</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="FirstName" name="FirstName" value="@Model.FirstName" />
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="LastName" class="control-label col-md-2">Müşteri Soyadı</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="LastName" name="LastName" value="@Model.LastName" />
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Email" class="control-label col-md-2">Müşteri Email</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="Email" name="Email" value="@Model.Email" />
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="CustomerMessage" class="control-label col-md-2">Müşteri Talebi</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="CustomerMessage" name="CustomerMessage" value="@Model.CustomerMessage" />
+                @Html.ValidationMessageFor(model => model.CustomerMessage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- Admin mesajı alanı burada gizleniyor -->
+        <div class="form-group admin-message-group">
+            <label for="AdminMessage" class="control-label col-md-2">Müşteri Hizmetleri Cevabı</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" id="AdminMessage" name="AdminMessage" value="@Model.AdminMessage" />
+                @Html.ValidationMessageFor(model => model.AdminMessage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- Seçim Yap (Radio buttons for İade or Yeni Talep) -->
+        <div class="form-group">
+            <label class="control-label col-md-2">Talep Türü</label>
+            <div class="col-md-10">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="RefundorNewRequest" id="refundRadio" value="false">
+                    <label class="form-check-label" for="Refund">İade</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="RefundorNewRequest" id="refundRadio2" value="true">
+                    <label class="form-check-label" for="NewRequest">Yeni Talep</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-primary">Ekle</button>
+            </div>
+        </div>
+    </form>
+
+    <style>
+        /* Admin mesajı alanını gizlemek için kullanılan CSS */
+        .admin-message-group {
+            display: none;
+        }
+    </style>
+
+   @*  <script>
+        // Bu JavaScript kodu, radio buttonların seçilme durumuna göre form verilerini otomatik olarak işlemek için kullanılabilir.
+        // Bu durumda, seçilen radio button'a göre "RequestType" hidden input'a değer atamaya gerek yok, çünkü radio buttonlar
+        // doğrudan form verileriyle gönderilecek.
+        $(document).ready(function () {
+            // Radiobutton'un değişimini dinle
+            $('#refundRadio').change(function () {
+                if ($(this).is(':checked')) {
+                    // Radiobutton seçili olduğunda Model.RefundorNewRequest değerini false yapıyoruz
+                    var status = @Model.RefundorNewRequest == true; // Razor içeriğini doğru şekilde kullanıyoruz
+                    status = false;
+                    console.log("false"); // Doğru yazım şekli
+                    console.log(status); // Değişkeni doğru yazdırıyoruz
+                    console.log(@Model.RefundorNewRequest); // Değişkeni doğru yazdırıyoruz
+                }
+            });
+
+            $('#refundRadio2').change(function () {
+                if ($(this).is(':checked')) {
+                    // Radiobutton seçili olduğunda Model.RefundorNewRequest değerini false yapıyoruz
+                    var status = @Model.RefundorNewRequest == true; // Razor içeriğini doğru şekilde kullanıyoruz
+                    status = true;
+                    console.log("true"); // Doğru yazım şekli
+                    console.log(status); // Değişkeni doğru yazdırıyoruz
+                    console.log(@Model.RefundorNewRequest); // Değişkeni doğru yazdırıyoruz
+                }
+            });
+
+        });
+    </script> *@
+
+</body>
+</html>

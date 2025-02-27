@@ -1,0 +1,63 @@
+﻿@model UserUpdateViewModel
+
+@{
+    ViewData["Title"] = "Kullanıcı Düzenle";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml"; // İlgili layout sayfasını ayarlayın
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+else if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-controller="Profile" asp-action="UserEdit" method="post" class="form-horizontal">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="Name" class="control-label col-md-2">Adı</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="FirstName" name="FirstName" value="@Model.FirstName" />
+            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="Shape" class="control-label col-md-2">Soyadı</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="LastName" name="LastName" value="@Model.LastName" />
+            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+  @*   <div class="form-group">
+        <label for="Description" class="control-label col-md-2">PictureFileName</label>
+        <div class="col-md-10">
+            <textarea class="form-control" id="PictureFileName" name="PictureFileName">@Model.PictureFileName</textarea>
+            @Html.ValidationMessageFor(model => model.PictureFileName, "", new { @class = "text-danger" })
+        </div>
+    </div> *@
+
+    <div class="form-group">
+        <label for="UsingArea" class="control-label col-md-2">Email</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="Email" name="Email" value="@Model.Email" />
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Güncelle</button>
+        </div>
+    </div>
+</form>

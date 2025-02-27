@@ -1,0 +1,92 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model ProductViewModel
+
+@{
+    ViewData["Title"] = "Ürün Detay Sayfası";
+    Layout = "~/Areas/ContentManager/Views/Shared/_Layout2.cshtml"; // İlgili layout sayfasını ayarlayın
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["RecordNotFounded"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["RecordNotFounded"]
+    </div>
+}
+
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h4> ' @Model.Name ' Ürününün Detayları </h4>
+    </div>
+    @*  <img class="card-img-top" src="..." alt="Card image cap"> *@
+    @if (Model.Picture != null && Model.Picture.Length > 0)
+    {
+        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Picture)"
+             alt="Ürün Fotoğrafı" style="max-width: 300px;" />
+    }
+    else
+    {
+        <p>Fotoğraf bulunamadı.</p>
+    }
+
+
+
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <h5 class="card-title">Ürün Açıklaması</h5>
+
+                <p class="card-text">@Model.Description</p>
+            </li>
+
+            <li class="list-group-item">
+                <h5 class="card-title">Ürün Fiyatı</h5>
+
+                <p class="card-text">@Model.Price</p>
+            </li>
+
+            <li class="list-group-item">
+                <h5 class="card-title">Üretildiği Materyal</h5>
+
+                <p class="card-text">@Model.MadedMaterialName</p>
+            </li>
+
+            <li class="list-group-item">
+                <h5 class="card-title">Kategorisi</h5>
+
+                <p class="card-text">@Model.ProductCategoryName</p>
+            </li>
+
+
+
+
+            <li class="list-group-item">
+                <p class="card-text">
+
+
+                    <small class="text-muted">
+                        @if (Model.Updated != null)
+                        {
+                            <span>Son Güncellenme Tarihi: @Model.Updated.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                        }
+                        else
+                        {
+                            <span>Oluşturulma Tarihi: @Model.Created.ToString("dd/MM/yyyy HH:mm")</span>
+                        }
+                    </small>
+                </p>
+            </li>
+        </ul>
+
+        <p class="card-link">
+            <a href="@Url.Action("Index", "Product")" class="btn btn-secondary">Geri Dön</a>
+            <!-- İsterseniz düzenleme veya silme için butonlar ekleyebilirsiniz -->
+            <a href="@Url.Action("Update", "Product", new { id = Model.Id })" class="btn btn-primary">Düzenle</a>
+
+
+        </p>
+
+    </div>
+</div>

@@ -1,0 +1,30 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model IEnumerable<QuestionViewModel>
+
+@{
+    ViewData["Title"] = "Questions List";
+    ViewBag.Title = "Sıkça Sorulan Sorular";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<!-- Kapsayıcı div ile tüm kartları saran bir dikdörtgen yapısı oluşturuyoruz -->
+<div class="card">
+    <div class="card-body">
+        <div class="list-group">
+            @foreach (var question in Model)
+            {
+                <div class="list-group-item">
+                    <h5 class="mb-1"><strong>Soru:</strong> @question.Questions</h5>
+                    <h5 class="mb-3"><strong>Cevap:</strong> @question.Answer</h5>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">Bulunamadı.</div>
+}

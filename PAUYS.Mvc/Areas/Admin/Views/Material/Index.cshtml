@@ -1,0 +1,48 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model IEnumerable<MaterialViewModel>
+
+@{
+    ViewData["Title"] = "Materials List";
+    ViewBag.Title = "Materyal";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<a href="@Url.Action("Add", "Material")" class="btn btn-primary mb-3">Yeni Materyal Ekle</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Adı</th>
+            <th>Açıklaması</th>
+            <th>Sil</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var material in Model)
+        {
+            <tr>
+                <td>@material.Name</td>
+
+                <td>
+                    <a href="@Url.Action("Detail", "Material", new { id = material.Id })" class="btn btn-info btn-sm">Detay Gör</a>
+                    <!-- You can add edit and delete functionality here -->
+                </td>
+                <td>
+                    @using (Html.BeginForm("Delete", "Material", new { id = material.Id }, FormMethod.Post))
+                    {
+                        <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">Materyal bulunamadı.</div>
+}
+

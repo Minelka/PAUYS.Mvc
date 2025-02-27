@@ -1,0 +1,56 @@
+﻿@model PAUYS.ViewModel.Concrete.PackingGuideViewModel
+
+@{
+    ViewData["Title"] = "Ambalaj Rehberi Düzenle";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml"; // İlgili layout sayfasını ayarlayın
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+else if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="Update" method="post" class="form-horizontal">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="Name" class="control-label col-md-2">Onay Süreci:</label>
+        <div class="col-md-10">
+            @* <input type="text" class="form-control" id="Confirmation" name="Confirmation" value="@Model.Confirmation" /> *@
+            <textarea class="form-control" id="Confirmation" name="Confirmation">@Model.Confirmation</textarea>
+
+            @Html.ValidationMessageFor(model => model.Confirmation, "", new { @class = "text-danger" })
+        </div>
+        <label for="Name" class="control-label col-md-2">Numune Süreci:</label>
+        <div class="col-md-10">
+            <textarea class="form-control" id="Sample" name="Sample" >@Model.Sample</textarea>
+            @Html.ValidationMessageFor(model => model.Sample, "", new { @class = "text-danger" })
+        </div>
+        <label for="Name" class="control-label col-md-2">Kalıp Üretimi:</label>
+        <div class="col-md-10">
+            <textarea class="form-control" id="MoldProduction" name="MoldProduction" >@Model.MoldProduction</textarea>
+            @Html.ValidationMessageFor(model => model.MoldProduction, "", new { @class = "text-danger" })
+        </div>
+        <label for="Name" class="control-label col-md-2">Finalizasyon:</label>
+        <div class="col-md-10">
+            <textarea class="form-control" id="Finalization" name="Finalization" >@Model.Finalization</textarea>
+            @Html.ValidationMessageFor(model => model.Finalization, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Güncelle</button>
+        </div>
+    </div>
+</form>

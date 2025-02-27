@@ -1,0 +1,47 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model IEnumerable<PackingGuideViewModel>
+
+@{
+    ViewData["Title"] = "PackingGuide List";
+    ViewBag.Title = "Ambalaj Rehberi";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Onay Süreci</th>
+            <th>Numune Süreci</th>
+            <th>Kalıp Üretim Süreci</th>
+            <th>Finalizasyon</th>
+            <th>Detay</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var packingGuide in Model)
+        {
+
+            <tr>
+                <td>@packingGuide.Confirmation</td>
+                <td>@packingGuide.Sample</td>
+                <td>@packingGuide.MoldProduction</td>
+                <td>@packingGuide.Finalization</td>
+
+                <td>
+                    <a href="@Url.Action("Detail", "PackingGuide", new { id = packingGuide.Id })" class="btn btn-info btn-sm">Detay Gör</a>
+                    <!-- You can add edit and delete functionality here -->
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">Ambalaj Rehberi Bulunamadı.</div>
+}
+

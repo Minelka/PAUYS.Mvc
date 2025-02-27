@@ -1,0 +1,64 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model BlogViewModel
+
+@{
+    ViewData["Title"] = "";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["RecordNotFounded"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["RecordNotFounded"]
+    </div>
+}
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h4>@Model.Title</h4>
+    </div>
+
+    @if (Model.Picture != null && Model.Picture.Length > 0)
+    {
+        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Picture)"
+             alt="Ürün Fotoğrafı" class="img-fluid" style="max-width: 100%; height: auto; object-fit: cover;" />
+    }
+    else
+    {
+        <p>Fotoğraf bulunamadı.</p>
+    }
+
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <h5 class="card-title">@Model.Title</h5>
+            </li>
+
+            <li class="list-group-item">
+                <p class="card-text">@Model.Text</p>
+            </li>
+
+            <li class="list-group-item">
+                <p class="card-text">
+                    <small class="text-muted">
+                        @if (Model.Updated != null)
+                        {
+                            <span>Son Güncellenme Tarihi: @Model.Updated.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                        }
+                        else
+                        {
+                            <span>Oluşturulma Tarihi: @Model.Created.ToString("dd/MM/yyyy HH:mm")</span>
+                        }
+                    </small>
+                </p>
+            </li>
+        </ul>
+
+        <p class="card-link">
+            <a href="@Url.Action("Index", "Blog")" class="btn btn-secondary">Geri Dön</a>
+        </p>
+
+    </div>
+</div>

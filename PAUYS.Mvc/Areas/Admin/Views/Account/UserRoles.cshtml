@@ -1,0 +1,66 @@
+﻿@model UserWithRolesViewModel
+@{
+    ViewData["Title"] = "Kullanıcın Rolleri";
+    ViewBag.Title = "Kullanıcın Rolleri";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml";
+}
+<div style="height: 20px;"></div>
+
+<td>
+    <a href="@Url.Action("UserAddRole", "Account", new { id = Model.Id })" class="btn btn-info btn-sm">Rol Ekle</a>
+    <!-- You can add edit and delete functionality here -->
+</td>
+
+<div style="height: 20px;"></div> 
+
+@if (TempData.ContainsKey("DeleteSuccess"))
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Rol Silindi!</strong> @TempData["DeleteSuccess"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData.ContainsKey("DeleteFail"))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Rol Silinmedi!</strong> @TempData["DeleteFail"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<dl class="row">
+    <dt class="col-sm-3">Ad </dt>
+    <dd class="col-sm-9">@Model.FirstName</dd>
+
+    <dt class="col-sm-3">Soyad</dt>
+    <dd class="col-sm-9">@Model.LastName</dd>
+
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+
+    <dt class="col-sm-3">Roller</dt>
+    <dd class="col-sm-9">
+        @if (Model.Roles.Any())
+        {
+            <ul>
+                @foreach (RoleResponseViewModel item in Model.Roles)
+                {
+                    <li>
+                        @item.Name
+                        @using (Html.BeginForm("UserRemoveRole", "Account", new { id = @Model.Id, roleId = @item.Id }, FormMethod.Post))
+                            {
+                                <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                            }
+                        
+@*                          <a asp-controller="Account" asp-action="UserRemoveRole" asp-route-id="@Model.Id" asp-route-roleId="@item.Id" role="button" class="btn badge bg-danger ">Sil</a>
+ *@                 </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>Kullanıcının hiç bir rolü yoktur.</p>
+        }
+    </dd>
+</dl>

@@ -1,0 +1,105 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model IEnumerable<ProductViewModel>
+
+@{
+    ViewData["Title"] = "Product List";
+    ViewBag.Title = "Ürünler";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<a href="@Url.Action("Add", "Product")" class="btn btn-primary mb-3">Yeni Ürün Ekle</a>
+
+
+
+
+<div class="container">
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h4>@product.Name</h4>
+                    </div>
+
+                    @if (product.Picture != null && product.Picture.Length > 0)
+                    {
+                        <img class="card-img-top" src="data:image/jpeg;base64,@Convert.ToBase64String(product.Picture)"
+                             alt="Ürün Fotoğrafı" style="max-height: 200px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <p class="text-center">Fotoğraf bulunamadı.</p>
+                    }
+
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <h5 class="card-title">Ürün Açıklaması</h5>
+                                <p class="card-text">@product.Description</p>
+                            </li>
+
+                            <li class="list-group-item">
+                                <h5 class="card-title">Ürün Fiyatı</h5>
+                                <p class="card-text">@product.Price ₺</p>
+                            </li>
+
+                            <li class="list-group-item">
+                                <h5 class="card-title">Üretildiği Materyal</h5>
+                                <p class="card-text">@product.MadedMaterialName</p>
+                            </li>
+
+                            <li class="list-group-item">
+                                <h5 class="card-title">Kategorisi</h5>
+                                <p class="card-text">@product.ProductCategoryName</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            @if (product.Updated != null)
+                            {
+                                <span>Son Güncellenme Tarihi: @product.Updated.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                            }
+                            else
+                            {
+                                <span>Oluşturulma Tarihi: @product.Created.ToString("dd/MM/yyyy HH:mm")</span>
+                            }
+                        </small>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th> </th>
+                                    <th> </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding-right: 5px;">
+                                        <a href="@Url.Action("Detail", "Product", new { id = product.Id })" class="btn btn-info btn-sm">Detay Gör</a>
+                                    </td>
+                                    <td>
+                                        @using (Html.BeginForm("Delete", "Product", new { id = product.Id }, FormMethod.Post))
+                                        {
+                                            <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">Ürün bulunamadı.</div>
+}
+

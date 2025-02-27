@@ -1,0 +1,50 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model IEnumerable<QuestionViewModel>
+
+@{
+    ViewData["Title"] = "Questions List";
+    ViewBag.Title = "Soru-Yanıt";
+    Layout = "~/Areas/CustomerService/Views/Shared/_Layout3.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<a href="@Url.Action("Add", "Question")" class="btn btn-primary mb-3">Yeni Soru-Yanıt Ekle</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Soru</th>
+            <th>Yanıt</th>
+            <th>Detay</th>
+            <th>Sil</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var question in Model)
+        {
+            <tr>
+                <td>@question.Questions</td>
+                <td>@question.Answer</td>
+
+                <td>
+                    <a href="@Url.Action("Detail", "Question", new { id = question.Id })" class="btn btn-info btn-sm">Detay Gör</a>
+                    <!-- You can add edit and delete functionality here -->
+                </td>
+                <td>
+                    @using (Html.BeginForm("Delete", "Question", new { id = question.Id }, FormMethod.Post))
+                    {
+                        <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">Bulunamadı.</div>
+}
+

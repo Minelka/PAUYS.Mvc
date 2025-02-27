@@ -1,0 +1,39 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model QuestionViewModel
+
+@{
+    ViewData["Title"] = "Soru-Yanıt Detayı";
+    Layout = "~/Areas/CustomerService/Views/Shared/_Layout3.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["RecordNotFounded"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["RecordNotFounded"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4>Soru-Yanıt Detayı: @Model.Questions</h4>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="Questions">Soru:</label>
+            <p>@Model.Questions</p>
+        </div>
+        <div class="form-group">
+            <label for="Answer">Yanıt:</label>
+            <p>@Model.Answer</p>
+        </div>
+
+
+        <div class="form-group">
+            <a href="@Url.Action("Index", "Question")" class="btn btn-secondary">Geri Dön</a>
+            <!-- İsterseniz düzenleme veya silme için butonlar ekleyebilirsiniz -->
+            <a href="@Url.Action("Update", "Question", new { id = Model.Id })" class="btn btn-primary">Düzenle</a>
+        </div>
+    </div>
+</div>

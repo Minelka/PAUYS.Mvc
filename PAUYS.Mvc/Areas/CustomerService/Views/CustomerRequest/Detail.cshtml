@@ -1,0 +1,57 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model CustomerRequestViewModel
+
+@{
+    ViewData["Title"] = "Müşteri İsteği Detay Sayfası";
+    Layout = "~/Areas/CustomerService/Views/Shared/_Layout3.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["RecordNotFounded"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["RecordNotFounded"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4>Müşteri Adı: @Model.FirstName</h4>
+    </div>
+    <div class="card-header">
+        <h4>Müşteri Soyadı: @Model.LastName</h4>
+    </div>
+    <div class="card-body">
+
+        <div class="form-group">
+            <label for="Email">Müşteri Email:</label>
+            <p>@Model.Email</p>
+        </div>
+
+        <div class="form-group">
+            <label for="CustomerMessage">Müşteri Talebi:</label>
+            <p>@Model.CustomerMessage</p>
+        </div>
+
+        <div class="form-group">
+            <label for="AdminMessage">Müşteri Hizmetleri Dönüş Durumu</label>
+            <p>@Model.AdminMessage</p>
+        </div>
+
+        <div class="form-group">
+            <label for="RefundorNewRequest">Talep Türü</label>
+            <p>
+                @(Model.RefundorNewRequest ? "Yeni Talep" : "İade")
+            </p>
+        </div>
+
+
+
+        <div class="form-group">
+            <a href="@Url.Action("Index", "CustomerRequest")" class="btn btn-secondary">Geri Dön</a>
+            <!-- İsterseniz düzenleme veya silme için butonlar ekleyebilirsiniz -->
+            <a href="@Url.Action("Update", "CustomerRequest", new { id = Model.Id })" class="btn btn-primary">Dönüş Durumunu Güncelle</a>
+        </div>
+    </div>
+</div>

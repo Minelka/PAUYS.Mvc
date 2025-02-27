@@ -1,0 +1,195 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model IEnumerable<CustomerRequestViewModel>
+
+@{
+    ViewData["Title"] = "CustomerRequest List";
+    ViewBag.Title = "Müşteri Hizmetleri Ana Sayfa";
+    Layout = "~/Areas/CustomerService/Views/Shared/_Layout3.cshtml";
+}
+
+@* <h2>@ViewData["Title"]</h2> *@
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Müşteri Adı</th>
+            <th>Müşteri Soyadı</th>
+            <th>Email</th>
+            <th>Müşteri Mesajı</th>
+            <th>Müşteri Hizmetleri Dönüş Durumu</th>
+            <th>Talep Sebebi</th>
+            <th>Detay Görüntüle</th>
+            <th>Sil</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var customerRequest in Model)
+        {
+            <tr>
+                <td>@customerRequest.FirstName</td>
+                <td>@customerRequest.LastName</td>
+                <td>@customerRequest.Email</td>
+                <td>@customerRequest.CustomerMessage</td>
+                <td>@customerRequest.AdminMessage</td>
+                <td>
+                    @(customerRequest.RefundorNewRequest ? "Yeni Talep" : "İade")
+                </td>
+
+                <td>
+                    <a href="@Url.Action("Detail", "CustomerRequest", new { id = customerRequest.Id })" class="btn btn-info btn-sm">Detay Gör</a>
+                    <!-- You can add edit and delete functionality here -->
+                </td>
+                <td>
+                    @using (Html.BeginForm("Delete", "CustomerRequest", new { id = customerRequest.Id }, FormMethod.Post))
+                    {
+                        <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">Materyal bulunamadı.</div>
+}
+@* @{
+    ViewData["Title"] = "CustomerRequest List";
+    ViewBag.Title = "Müşteri Talebi";
+    Layout = "~/Areas/CustomerService/Views/Shared/_Layout3.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Müşteri Adı</th>
+            <th>Müşteri Soyadı</th>
+            <th>Email</th>
+            <th>Müşteri Mesajı</th>
+            <th>Müşteri Hizmetleri Cevabı</th>
+            <th>Talep Sebebi</th>
+            <th>Detay Görüntüle</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var customerRequest in Model)
+        {
+            <tr>
+                <td>@customerRequest.FirstName</td>
+                <td>@customerRequest.LastName</td>
+                <td>@customerRequest.Email</td>
+                <td>@customerRequest.CustomerMessage</td>
+                <td>@customerRequest.AdminMessage</td>
+                <td>
+                    @(customerRequest.RefundorNewRequest ? "Yeni Talep" : "İade")
+                </td>
+
+                <td>
+                    <!-- Detay butonuna tıklanıldığında detayları çek ve güncelle -->
+                    <button class="btn btn-info btn-sm" data-id="@customerRequest.Id">Detay Gör</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">Talep bulunamadı.</div>
+}
+
+<!-- Modal -->
+<div class="modal fade" id="customerRequestDetailModal" tabindex="-1" role="dialog" aria-labelledby="customerRequestDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="customerRequestDetailModalLabel">Talep Detayı</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- API'den alınan detaylar burada yüklenecek -->
+                <div id="customerRequestDetailContent">
+                    <!-- Güncelleme Formu -->
+                    <form id="updateRequestForm">
+                        <div class="form-group">
+                            <label for="customerMessage">Müşteri Mesajı:</label>
+                            <textarea id="customerMessage" name="customerMessage" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="adminMessage">Müşteri Hizmetleri Cevabı:</label>
+                            <textarea id="adminMessage" name="adminMessage" class="form-control"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Güncelle</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> *@
+
+@* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var currentRequestId = null; // Şu anda güncellenmekte olan talep ID'si
+
+        // Detay butonuna tıklama olayını dinle
+        $('.btn-info').on('click', function (e) {
+            e.preventDefault();
+            currentRequestId = $(this).data('id'); // Tıklanan butondan talep ID'sini al
+
+            var url = 'https://localhost:7203/api/CustomerRequest/' + currentRequestId; // Detayları almak için URL
+
+            // AJAX çağrısı ile API'den veri alıyoruz
+            $.ajax({
+                url: url, // API URL'si
+                type: 'GET',
+                success: function (data) {
+                    // API'den dönen veriyi modal içinde göster
+                    $('#customerMessage').val(data.customerMessage);
+                    $('#adminMessage').val(data.adminMessage);
+                    $('#customerRequestDetailModal').modal('show'); // Modali göster
+                },
+                error: function () {
+                    alert('Talep detayları yüklenirken bir hata oluştu.');
+                }
+            });
+        });
+
+        // Güncelleme formunun submit olayını dinle
+        $('#updateRequestForm').on('submit', function (e) {
+            e.preventDefault();
+
+            // Modalda gösterilen verileri al
+            var updatedCustomerMessage = $('#customerMessage').val(); // Müşteri mesajı
+            var updatedAdminMessage = $('#adminMessage').val(); // Admin cevabı
+
+            var url = 'https://localhost:7203/api/CustomerRequest/' + currentRequestId; // API URL'si
+
+            // Güncelleme için AJAX çağrısı yapıyoruz (PUT isteği)
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    customerMessage: updatedCustomerMessage,
+                    adminMessage: updatedAdminMessage
+                }),
+                success: function (data) {
+                    alert('Talep başarıyla güncellendi!');
+                    $('#customerRequestDetailModal').modal('hide'); // Modali kapat
+                    location.reload(); // Sayfayı yenileyerek güncellenmiş veriyi göster
+                },
+                error: function () {
+                    alert('Güncelleme işlemi sırasında bir hata oluştu.');
+                }
+            });
+        });
+    });
+</script> *@

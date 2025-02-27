@@ -1,0 +1,75 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model NewsAddViewModel
+
+@{
+    ViewData["Title"] = "Haberi Güncelle";
+    Layout = "~/Areas/ContentManager/Views/Shared/_Layout2.cshtml"; // İlgili layout sayfasını ayarlayın
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+else if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="Update" method="post" enctype="multipart/form-data" class="form-horizontal">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id) <!-- Gizli ID alanı -->
+
+    <div class="form-group">
+        <label asp-for="Title" class="control-label col-md-2">Haber Başlığı</label>
+        <div class="col-md-10">
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Text" class="control-label col-md-2">Haber İçeriği</label>
+        <div class="col-md-10">
+            <input asp-for="Text" class="form-control" />
+            <span asp-validation-for="Text" class="text-danger"></span>
+        </div>
+    </div>
+
+    @if (Model.Picture != null)
+    {
+        <div class="form-group">
+            <label class="control-label col-md-2">Mevcut Fotoğraf</label>
+            <div class="col-md-10">
+                <img src="data:image/png;base64,@Convert.ToBase64String(Model.Picture)" alt="Haber Fotoğrafı" class="img-thumbnail" style="max-width: 200px;" />
+            </div>
+        </div>
+    }
+
+    <div class="form-group">
+        <label asp-for="PictureFormFile" class="control-label col-md-2">Yeni Fotoğraf Yükle</label>
+        <div class="col-md-10">
+            <input asp-for="PictureFormFile" class="form-control" accept=".jpg, .jpeg, .png" />
+            <span asp-validation-for="PictureFormFile" class="text-danger"></span>
+            <small class="form-text text-muted">Lütfen .jpg, .jpeg veya .png formatında bir dosya yükleyin.</small>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Güncelle</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

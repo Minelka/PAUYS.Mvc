@@ -1,0 +1,43 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model PackingGuideViewModel
+
+@{
+    ViewData["Title"] = "Ambalaj Rehberi";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["RecordNotFounded"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["RecordNotFounded"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="form-group">
+            <h2 class="custom-label">Onay Süreci</h2>
+            <p>@Model.Confirmation</p>
+        </div>
+        <div class="form-group">
+            <h2 class="custom-label">Numune Süreci</h2>
+            <p>@Model.Sample</p>
+        </div>
+        <div class="form-group">
+            <h2 class="custom-label">Kalıp Üretim Süreci</h2>
+            <p>@Model.MoldProduction</p>
+        </div>
+        <div class="form-group">
+            <h2 class="custom-label">Finalizasyon Süreci</h2>
+            <p>@Model.Finalization</p>
+        </div>
+
+
+        <div class="form-group">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Geri Dön</a>
+        </div>
+    </div>
+</div>
+

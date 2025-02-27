@@ -1,0 +1,69 @@
+﻿@using System.Text.Json
+@{
+    ViewData["Title"] = "CustomerRequest List";
+    ViewBag.Title = "Performans Verileri";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml";
+}
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Dashboard</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active"></li>
+    </ol>
+
+    <!-- Bar Chart -->
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar me-1"></i>
+                    İade ve Yeni Talepler 
+                </div>
+                <div class="card-body">
+                    <canvas id="requestBarChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Card for Unanswered Requests -->
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-question-circle me-1"></i>
+                    Cevaplanmamış Talepler
+                </div>
+                <div class="card-body d-flex justify-content-center align-items-center">
+                    <p style="font-size: 20px;">
+                        @ViewBag.UnansweredRequests Adet Talep Cevaplanmadı.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Bar Chart for Refund and New Requests
+    const ctxBar = document.getElementById('requestBarChart').getContext('2d');
+    new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: ['Son 1 Hafta', 'Son 1 Ay', 'Bu Yıl'],
+            datasets: [
+                {
+                    label: 'İade Talepleri',
+                    backgroundColor: 'rgba(255, 99, 132, 0.7)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    data: @Html.Raw(JsonSerializer.Serialize(ViewBag.RefundRequestsData))
+                    },
+                {
+                    label: 'Yeni Talepler',
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    data: @Html.Raw(JsonSerializer.Serialize(ViewBag.NewRequestsData))
+                    }
+            ]
+        }
+    });
+</script>

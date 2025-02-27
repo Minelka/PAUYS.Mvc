@@ -1,0 +1,50 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model CategoryViewModel
+
+@{
+    ViewData["Title"] = "Kategori Detayı";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml"; // İlgili layout sayfasını ayarlayın
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["RecordNotFounded"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["RecordNotFounded"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4>Kategori Detayı: @Model.Name</h4>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="Name">Kategori Adı:</label>
+            <p>@Model.Name</p>
+        </div>
+
+        <div class="form-group">
+            <label for="Shape">Şekli:</label>
+            <p>@Model.Shape</p>
+        </div>
+
+        <div class="form-group">
+            <label for="Description">Açıklama:</label>
+            <p>@Model.Description</p>
+        </div>
+
+        <div class="form-group">
+            <label for="UsingArea">Kullanım Alanı:</label>
+            <p>@Model.UsingArea</p>
+        </div>
+
+        <div class="form-group">
+            <a href="@Url.Action("Index", "Category")" class="btn btn-secondary">Geri Dön</a>
+            <!-- İsterseniz düzenleme veya silme için butonlar ekleyebilirsiniz -->
+            <a href="@Url.Action("Update", "Category", new { id = Model.Id })" class="btn btn-primary">Düzenle</a>
+        </div>
+    </div>
+</div>
+

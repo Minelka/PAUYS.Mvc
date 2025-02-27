@@ -1,0 +1,49 @@
+﻿@model UserRoleViewModel
+
+@{
+    ViewData["Title"] = "Rol Ekle";
+    ViewBag.Title = "Rol Ekle";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml";
+}
+
+<form asp-controller="Account" asp-action="UserAddRole" method="post" class="form-horizontal">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="RoleId" class="control-label col-md-2">Rol</label>
+        <div class="col-md-10">
+            <select id="RoleId" name="RoleId" class="form-control">
+                <option value="-1">Rol Seçiniz</option>
+                @foreach (var role in ViewBag.Roles)
+                {
+                    <option value="@role.Value">@role.Text</option>
+                }
+            </select>
+            <span asp-validation-for="RoleId" class="text-danger"></span>
+        </div>
+    </div>
+    <!-- UserId'yi gizli olarak formda gönderiyoruz -->
+    <input type="hidden" name="UserId" value="@Model.UserId" />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Gönder</button>
+        </div>
+    </div>
+@*     <div class="col-md-12">
+        <input type="submit" class="btn btn-primary" value="Rol Ekle" />
+        <input asp-for="UserId" />
+    </div> *@
+</form>
+
+@* form asp-controller="Account" asp-action="UserAddRole">
+<div class="row g-3">
+    <div class="col-md-12">
+        <select asp-for="RoleId" class="form-select" asp-items="@ViewBag.Roles"></select>
+        <span asp-validation-for="RoleId" class="text-danger"></span>
+    </div>
+    <div class="col-md-12">
+        <input type="submit" class="btn btn-primary" value="Gönder" />
+        <input asp-for="UserId" />
+    </div>
+</div>
+</form> *@

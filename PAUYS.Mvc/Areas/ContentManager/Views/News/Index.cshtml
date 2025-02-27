@@ -1,0 +1,101 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model IEnumerable<NewsViewModel>
+
+@{
+    ViewData["Title"] = "News List";
+    ViewBag.Title = "Haberler";
+    Layout = "~/Areas/ContentManager/Views/Shared/_Layout2.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<a href="@Url.Action("Add", "News")" class="btn btn-primary mb-3">Yeni Haber Ekle</a>
+
+<div class="container">
+    <div class="row">
+        @foreach (var news in Model)
+        {
+            <div class="col-md-6 mb-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h4>@news.Title</h4>
+                    </div>
+
+                    @if (news.Picture != null && news.Picture.Length > 0)
+                    {
+                        <img class="card-img-top" src="data:image/jpeg;base64,@Convert.ToBase64String(news.Picture)"
+                             alt="Ürün Fotoğrafı" style="max-height: 200px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <p class="text-center">Fotoğraf bulunamadı.</p>
+                    }
+
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <h5 class="card-title">Haberin Başlığı</h5>
+                                <p class="card-text">@news.Title</p>
+                            </li>
+
+                            <li class="list-group-item">
+                                <h5 class="card-title">Haberin İçeriği</h5>
+                                <!-- Kısa metin gösterimi, örneğin ilk 200 karakter -->
+                                <p class="card-text">
+                                    @if (news.Text.Length > 200)
+                                    {
+                                        @Html.Raw(news.Text.Substring(0, 200) + "...")
+                                    }
+                                    else
+                                    {
+                                        @Html.Raw(news.Text)
+                                    }
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            @if (news.Updated != null)
+                            {
+                                <span>Son Güncellenme Tarihi: @news.Updated.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                            }
+                            else
+                            {
+                                <span>Oluşturulma Tarihi: @news.Created.ToString("dd/MM/yyyy HH:mm")</span>
+                            }
+                        </small>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th> </th>
+                                    <th> </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding-right: 5px;">
+                                        <!-- Detay Gör butonu, haber detay sayfasına yönlendiriyor -->
+                                        <a href="@Url.Action("Detail", "News", new { id = news.Id })" class="btn btn-info btn-sm">Detay Gör</a>
+                                    </td>
+                                    <td>
+                                        @using (Html.BeginForm("Delete", "News", new { id = news.Id }, FormMethod.Post))
+                                        {
+                                            <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">Haber bulunamadı.</div>
+}

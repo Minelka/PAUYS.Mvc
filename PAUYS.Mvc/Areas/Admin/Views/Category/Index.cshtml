@@ -1,0 +1,51 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model IEnumerable<CategoryViewModel>
+
+@{
+    ViewData["Title"] = "Categories List";
+    ViewBag.Title = "Kategori";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<a href="@Url.Action("Add", "Category")" class="btn btn-primary mb-3">Yeni Kategori Ekle</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Adı</th>
+            <th>Şekli</th>
+            <th>Açıklaması</th>
+            <th>Kullanım Alanı</th>
+            <th>Sil</th>
+            <th>Detay</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Name</td>
+                <td>@category.Shape</td>
+                <td>@category.Description</td>
+                <td>@category.UsingArea</td>
+                <td>
+                    <a href="@Url.Action("Detail", "Category", new { id = category.Id })" class="btn btn-info btn-sm">Detay Gör</a>
+                    <!-- You can add edit and delete functionality here -->
+                </td>
+                <td>
+                    @using (Html.BeginForm("Delete", "Category", new { id = category.Id }, FormMethod.Post))
+                    {
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Bu Kategoriyi silmek istediğinize emin misiniz?');">Sil</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">No categories found.</div>
+}

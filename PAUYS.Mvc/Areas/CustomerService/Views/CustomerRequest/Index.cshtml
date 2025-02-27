@@ -1,0 +1,59 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model IEnumerable<CustomerRequestViewModel>
+
+@{
+    ViewData["Title"] = "CustomerRequest List";
+    ViewBag.Title = "Müşteri Talebi";
+    Layout = "~/Areas/CustomerService/Views/Shared/_Layout3.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>Email</th>
+            <th>Müşteri Talebi</th>
+            <th>Müşteri Hizmetleri Dönüş Durumu</th>
+            <th>Talep Türü</th>
+            <th>Detay Görüntüle</th>
+            <th>Sil</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customerRequest in Model)
+        {
+            <tr>
+                <td>@customerRequest.FirstName</td>
+                <td>@customerRequest.LastName</td>
+                <td>@customerRequest.Email</td>
+                <td>@customerRequest.CustomerMessage</td>
+                <td>@customerRequest.AdminMessage</td>
+                <td>
+                    @(customerRequest.RefundorNewRequest ? "İade" : "Yeni Talep") <!-- Düzeltilmiş satır -->
+                </td>
+
+                <td>
+                    <a href="@Url.Action("Detail", "CustomerRequest", new { id = customerRequest.Id })" class="btn btn-info btn-sm">Detay Gör</a>
+                    <!-- You can add edit and delete functionality here -->
+                </td>
+                <td>
+                    @using (Html.BeginForm("Delete", "CustomerRequest", new { id = customerRequest.Id }, FormMethod.Post))
+                    {
+                        <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">Müşteri Talebi bulunamadı.</div>
+}
+

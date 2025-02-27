@@ -1,0 +1,44 @@
+﻿@model PAUYS.ViewModel.Concrete.QuestionViewModel
+
+@{
+    ViewData["Title"] = "Soru-Yanıt Düzenle";
+    Layout = "~/Areas/CustomerService/Views/Shared/_Layout3.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+else if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="Update" method="post" class="form-horizontal">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="Name" class="control-label col-md-2">Soru</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="Questions" name="Questions" value="@Model.Questions" />
+            @Html.ValidationMessageFor(model => model.Questions, "", new { @class = "text-danger" })
+        </div>
+        <label for="Name" class="control-label col-md-2">Yanıt</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="Answer" name="Answer" value="@Model.Answer" />
+            @Html.ValidationMessageFor(model => model.Answer, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Güncelle</button>
+        </div>
+    </div>
+</form>

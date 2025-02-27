@@ -1,0 +1,122 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model ProductAddViewModel
+
+@{
+    ViewData["Title"] = "Ürün Güncelle";
+    Layout = "~/Areas/ContentManager/Views/Shared/_Layout2.cshtml"; // İlgili layout sayfasını ayarlayın
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+else if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="Update" method="post" enctype="multipart/form-data" class="form-horizontal">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id) <!-- Gizli ID alanı -->
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="Name" class="form-control" disabled />
+            <input type="hidden" asp-for="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="control-label col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price" class="control-label col-md-2"></label>
+        <div class="col-md-10">
+            <!-- Disabled input (ekranda görünecek, düzenlenemez) -->
+            <input asp-for="Price" class="form-control" disabled />
+
+            <!-- Hidden input (form ile gönderilecek) -->
+            <input type="hidden" asp-for="Price" />
+
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MaterialId" class="control-label col-md-2">Üretildiği Materyal</label>
+        <div class="col-md-10">
+            <select asp-for="MaterialId" class="form-control" disabled>
+                <option value="">-- Lütfen bir materyal seçin --</option>
+                @foreach (var material in ViewBag.Materials as List<MaterialViewModel>)
+                {
+                    <option value="@material.Id" selected="@(Model.MaterialId == material.Id)">
+                        @material.Name
+                    </option>
+                }
+            </select>
+            <input type="hidden" asp-for="MaterialId" />
+            <span asp-validation-for="MaterialId" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryId" class="control-label col-md-2">Kategorisi</label>
+        <div class="col-md-10">
+            <select asp-for="CategoryId" class="form-control" disabled>
+                <option value="">-- Lütfen bir kategori seçin --</option>
+                @foreach (var category in ViewBag.Categories as List<CategoryViewModel>)
+                {
+                    <option value="@category.Id" selected="@(Model.CategoryId == category.Id)">
+                        @category.Name
+                    </option>
+                }
+            </select>
+            <input type="hidden" asp-for="CategoryId" />
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <!-- Kategori GÖRECEK-->
+    </div>
+
+    @if (Model.Picture != null)
+    {
+        <div class="form-group">
+            <label class="control-label col-md-2">Mevcut Fotoğraf</label>
+            <div class="col-md-10">
+                <img src="data:image/png;base64,@Convert.ToBase64String(Model.Picture)" alt="Ürün Fotoğrafı" class="img-thumbnail" style="max-width: 200px;" />
+            </div>
+        </div>
+    }
+
+    <div class="form-group">
+        <label asp-for="PictureFormFile" class="control-label col-md-2">Yeni Fotoğraf Yükle</label>
+        <div class="col-md-10">
+            <input asp-for="PictureFormFile" class="form-control" accept=".jpg, .jpeg, .png" />
+            <span asp-validation-for="PictureFormFile" class="text-danger"></span>
+            <small class="form-text text-muted">Lütfen .jpg, .jpeg veya .png formatında bir dosya yükleyin.</small>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Güncelle</button>
+            <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

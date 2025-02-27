@@ -1,0 +1,74 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model CustomerRequestViewModel
+
+@{
+    ViewData["Title"] = "Müşteri İstegi Duzenle";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml"; // İlgili layout sayfasını ayarlayın
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+else if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<form asp-action="Update" method="post" class="form-horizontal">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label for="FirstName" class="control-label col-md-2">Müşteri Adı</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="FirstName" name="FirstName" value="@Model.FirstName" readonly />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="LastName" class="control-label col-md-2">Müşteri Soyadı</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="LastName" name="LastName" value="@Model.LastName" readonly />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="Email" class="control-label col-md-2">Müşteri Email</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="Email" name="Email" value="@Model.Email" readonly />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="CustomerMessage" class="control-label col-md-2">Müşteri Mesajı</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="CustomerMessage" name="CustomerMessage" value="@Model.CustomerMessage" readonly />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="AdminMessage" class="control-label col-md-2">Müşteriye Dönüş Durumu</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="AdminMessage" name="AdminMessage" value="@Model.AdminMessage" />
+            @Html.ValidationMessageFor(model => model.AdminMessage, "", new { @class = "text-danger" })
+        </div>
+    </div>
+  @*   <div class="form-group">
+        <label for="RefundorNewRequest" class="control-label col-md-2">İade veya yeni talep</label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" id="RefundorNewRequest" name="RefundorNewRequest" value="@Model.RefundorNewRequest" />
+            @Html.ValidationMessageFor(model => model.RefundorNewRequest, "", new { @class = "text-danger" })
+        </div>
+    </div>
+  *@
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary">Güncelle</button>
+        </div>
+    </div>
+</form>

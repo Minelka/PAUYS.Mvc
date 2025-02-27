@@ -1,0 +1,36 @@
+﻿@using PAUYS.ViewModel.Concrete
+@model MaterialViewModel
+
+@{
+    ViewData["Title"] = "Materyal Detayı";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout1.cshtml"; // İlgili layout sayfasını ayarlayın
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["RecordNotFounded"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["RecordNotFounded"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4>Materyal Detayı: @Model.Name</h4>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="Name">Materyal Adı:</label>
+            <p>@Model.Name</p>
+        </div>
+
+
+        <div class="form-group">
+            <a href="@Url.Action("Index", "Material")" class="btn btn-secondary">Geri Dön</a>
+            <!-- İsterseniz düzenleme veya silme için butonlar ekleyebilirsiniz -->
+            <a href="@Url.Action("Update", "Material", new { id = Model.Id })" class="btn btn-primary">Düzenle</a>
+        </div>
+    </div>
+</div>
+

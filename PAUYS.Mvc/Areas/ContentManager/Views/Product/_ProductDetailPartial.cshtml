@@ -1,0 +1,9 @@
+﻿@model PAUYS.ViewModel.Concrete.ProductViewModel
+
+<div>
+    <h5>@Model.Name</h5>
+    <p>Açıklama: @Model.Description</p>
+    <p>Fiyat: @Model.Price</p>
+    <p>Materyal: @Model.MaterialViewModel?.Name</p>
+    <img src="@Url.Content("~/images/products/" + @Model.Picture)" alt="@Model.Name" class="img-fluid" />
+</div>
